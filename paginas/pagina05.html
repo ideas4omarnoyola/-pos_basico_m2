@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página 05</title>
+    <title>Página 03</title>
 
     <!-- Estilos -->
     <link rel="stylesheet" href="../css/estilos.css">
@@ -385,9 +385,9 @@
 
     <img class="elementos" id="d1" src="../img/pagina05/d1.png" data-posX="0" data-posY="0" alt="">
     <img class="elementos" id="instrucciones" src="../img/pagina05/instrucciones.png" data-posX="0" data-posY="0" alt="">
-    <img class="elementos botones" id="boton1" src="../img/pagina05/boton1.png" data-posX="557" data-posY="262" alt="">
-    <img class="elementos botones" id="boton2" src="../img/pagina05/boton2.png" data-posX="645" data-posY="215" alt="">
-    <img class="elementos botones" id="boton3" src="../img/pagina05/boton3.png" data-posX="747" data-posY="244" alt="">
+    <img class="elementos botones" id="boton1" data-index="0" src="../img/pagina05/boton1.png" data-posX="557" data-posY="262" alt="">
+    <img class="elementos botones" id="boton2" data-index="1" src="../img/pagina05/boton2.png" data-posX="645" data-posY="215" alt="">
+    <img class="elementos botones" id="boton3" data-index="2" src="../img/pagina05/boton3.png" data-posX="747" data-posY="244" alt="">
     <img class="elementos" id="pop1" src="../img/pagina05/pop1.png" data-posX="0" data-posY="0" alt="">
     <img class="elementos" id="pop2" src="../img/pagina05/pop2.png" data-posX="0" data-posY="0" alt="">
     <img class="elementos" id="pop3" src="../img/pagina05/pop3.png" data-posX="0" data-posY="0" alt="">
@@ -423,6 +423,8 @@
         const botonActivo = [boton1, boton2, boton3];
 
         let indexPop = 0;
+
+        let activos = false;
 
         // Audios------------------------------------------------------
         const audio = [
@@ -474,10 +476,17 @@
         botones.each(function(){
             $(this).click(function(){
                 if($(this).css('cursor') == 'pointer'){
+
+                    if(activos){
+                        indexPop = $(this).data('index');
+                    }
+                    else {
+                        dejarParpadear($(this));
+                    }
+
                     aplicacion.reproducirAudio(audioPop[indexPop], cerrarPop, 1);
                     animacionEntrada(pops[indexPop], 'default', 1, 1);
                     animacionEntrada(cerrar[indexPop], 'default', 1, 1);
-                    dejarParpadear($(this));
 
                     cerrar[indexPop].css('cursor', 'pointer');
 
@@ -501,7 +510,10 @@
                     aplicacion.detenerAudios();                    
                     animacionSalida(pops[indexPop], 'default', 1, 1);
                     animacionSalida(cerrar[indexPop], 'default', 1, 1);
-                    siguiente();
+
+                    if(!activos){
+                        siguiente();
+                    }
                 }
             });
         });
@@ -514,6 +526,8 @@
                 botonera();
             }
             else{
+                botones.css('cursor', 'pointer');
+                activos = true;
                 aplicacion.terminaPantalla();
             }
         }

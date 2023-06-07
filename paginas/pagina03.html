@@ -385,9 +385,9 @@
 
     <img class="elementos" id="d1" src="../img/pagina03/d1.png" data-posX="0" data-posY="0" alt="">
     <img class="elementos" id="instrucciones" src="../img/pagina03/instrucciones.png" data-posX="0" data-posY="0" alt="">
-    <img class="elementos botones" id="boton1" src="../img/pagina03/boton1.png" data-posX="305" data-posY="281" alt="">
-    <img class="elementos botones" id="boton2" src="../img/pagina03/boton2.png" data-posX="535" data-posY="281" alt="">
-    <img class="elementos botones" id="boton3" src="../img/pagina03/boton3.png" data-posX="765" data-posY="281" alt="">
+    <img class="elementos botones" id="boton1" data-index="0" src="../img/pagina03/boton1.png" data-posX="305" data-posY="281" alt="">
+    <img class="elementos botones" id="boton2" data-index="1" src="../img/pagina03/boton2.png" data-posX="535" data-posY="281" alt="">
+    <img class="elementos botones" id="boton3" data-index="2" src="../img/pagina03/boton3.png" data-posX="765" data-posY="281" alt="">
     <img class="elementos" id="pop1" src="../img/pagina03/pop1.png" data-posX="0" data-posY="0" alt="">
     <img class="elementos" id="pop2" src="../img/pagina03/pop2.png" data-posX="0" data-posY="0" alt="">
     <img class="elementos" id="pop3" src="../img/pagina03/pop3.png" data-posX="0" data-posY="0" alt="">
@@ -424,6 +424,8 @@
 
         let indexPop = 0;
 
+        let activos = false;
+
         // Audios------------------------------------------------------
         const audio = [
             new Audio('../audios/PROSA_ONB_ACLARACIONES_POS_M2_03_01.mp3'),
@@ -431,7 +433,7 @@
         ]
 
         const audioPop = [
-            new Audio('../audios/PROSA_ONB_ACLARACIONES_POS_M2_03_03.mp3'),
+            new Audio('../audios/audio0.mp3'),
             new Audio('../audios/PROSA_ONB_ACLARACIONES_POS_M2_03_04.mp3'),
             new Audio('../audios/PROSA_ONB_ACLARACIONES_POS_M2_03_05.mp3')
         ]
@@ -474,10 +476,18 @@
         botones.each(function(){
             $(this).click(function(){
                 if($(this).css('cursor') == 'pointer'){
+
+                    if(activos){
+                        indexPop = $(this).data('index');
+                    }
+                    else {
+                        dejarParpadear($(this));
+                    }
+
                     aplicacion.reproducirAudio(audioPop[indexPop], cerrarPop, 1);
                     animacionEntrada(pops[indexPop], 'default', 1, 1);
                     animacionEntrada(cerrar[indexPop], 'default', 1, 1);
-                    dejarParpadear($(this));
+                    
 
                     cerrar[indexPop].css('cursor', 'pointer');
 
@@ -501,7 +511,10 @@
                     aplicacion.detenerAudios();                    
                     animacionSalida(pops[indexPop], 'default', 1, 1);
                     animacionSalida(cerrar[indexPop], 'default', 1, 1);
-                    siguiente();
+
+                    if(!activos){
+                        siguiente();
+                    }
                 }
             });
         });
@@ -514,6 +527,8 @@
                 botonera();
             }
             else{
+                botones.css('cursor', 'pointer');
+                activos = true;
                 aplicacion.terminaPantalla();
             }
         }

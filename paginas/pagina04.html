@@ -384,23 +384,10 @@
 
     <img class="elementos" id="texto" src="../img/pagina04/texto.png" data-posX="0" data-posY="0"/>
     <img class="elementos" id="d1" src="../img/pagina04/d1.png" data-posX="0" data-posY="0"/>
-    <img class="elementos" id="base" src="../img/pagina04/base.png" data-posX="0" data-posY="0"/>
-    <img class="elementos" id="instrucciones" src="../img/pagina04/instrucciones.png" data-posX="0" data-posY="0"/>
-    <img class="elementos" id="cuadro1" src="../img/pagina04/cuadro1.png" data-posX="0" data-posY="0"/>
-    <img class="elementos" id="cuadro2" src="../img/pagina04/cuadro2.png" data-posX="0" data-posY="0"/>
-    <img class="elementos" id="cuadro3" src="../img/pagina04/cuadro3.png" data-posX="0" data-posY="0"/>
-    <img class="elementos" id="cuadro4" src="../img/pagina04/cuadro4.png" data-posX="0" data-posY="0"/>
-    <img class="elementos" id="cuadro5" src="../img/pagina04/cuadro5.png" data-posX="0" data-posY="0"/>
-    <img class="elementos" id="cuadro6" src="../img/pagina04/cuadro6.png" data-posX="0" data-posY="0"/>
-    <img class="elementos" id="cuadro7" src="../img/pagina04/cuadro7.png" data-posX="0" data-posY="0"/>
-    <img class="elementos" id="cuadro8" src="../img/pagina04/cuadro8.png" data-posX="0" data-posY="0"/>
-    <img class="elementos" id="cuadro9" src="../img/pagina04/cuadro9.png" data-posX="0" data-posY="0"/>
-    <img class="elementos" id="cuadro10" src="../img/pagina04/cuadro10.png" data-posX="0" data-posY="0"/>
-    <img class="elementos" id="cuadro11" src="../img/pagina04/cuadro11.png" data-posX="0" data-posY="0"/>
-    <img class="elementos" id="cuadro12" src="../img/pagina04/cuadro12.png" data-posX="0" data-posY="0"/>
-    
-    <img class="elementos" id="atras" src="../img/pagina04/atras.png" data-posX="279" data-posY="318"/>
-    <img class="elementos" id="adelante" src="../img/pagina04/adelante.png" data-posX="955" data-posY="318"/>
+
+    <a href="../infografia/info_anexos_v1.pdf" target="_blank" class="elementos" id="boton" data-posX="433" data-posY="228">
+        <img src="../img/pagina04/boton.png"/>
+    </a>
 
     <!-- Script de la página -->
     <script>
@@ -410,41 +397,7 @@
         const texto = $('#texto');
         const robot = $('#robot');
         const d1 = $('#d1');
-        const base = $('#base');
-        const instrucciones = $('#instrucciones');
-        const cuadro1 = $('#cuadro1');
-        const cuadro2 = $('#cuadro2');
-        const cuadro3 = $('#cuadro3');
-        const cuadro4 = $('#cuadro4');
-        const cuadro5 = $('#cuadro5');
-        const cuadro6 = $('#cuadro6');
-        const cuadro7 = $('#cuadro7');
-        const cuadro8 = $('#cuadro8');
-        const cuadro9 = $('#cuadro9');
-        const cuadro10 = $('#cuadro10');
-        const cuadro11 = $('#cuadro11');
-        const cuadro12 = $('#cuadro12');
-        const atras = $('#atras');
-        const adelante = $('#adelante');
-
-        atras.css('cursor', 'pointer');
-
-        const slides = [
-            cuadro1,
-            cuadro2,
-            cuadro3,
-            cuadro4,
-            cuadro5,
-            cuadro6,
-            cuadro7,
-            cuadro8,
-            cuadro9,
-            cuadro10,
-            cuadro11,
-            cuadro12,
-        ]
-
-        let noSlide = 0;
+        const boton = $('#boton');
 
         // Audios------------------------------------------------------
         const audio = [
@@ -458,7 +411,7 @@
         });
 
         function iniciarContenido(){
-            aplicacion.reproducirAudio(audio[0], actividad, 1);
+            aplicacion.reproducirAudio(audio[0], activarBoton, 1);
             animacionEntrada(texto, 'default', 1);
             animacionEntrada(robot, 'default', 1, 1);
             animacionEntrada(d1, 'izquierda-derecha', 1);
@@ -469,60 +422,13 @@
             }, 1000);
         }
 
-        function actividad(){
-            pausarHablar();
-            animacionSalida(d1, 'izquierda-derecha', 1);
-            animacionEntrada(base, 'default', 1);
-            carrusel(noSlide);
+        function activarBoton(){
+            parpadear(boton);
         }
 
-        function carrusel(pantalla){
-            animacionEntrada(slides[pantalla], 'default', 1, 1);
-            setTimeout(()=>{
-                botonAdelante();
-            }, 1000);
-
-            if(pantalla > 0 & atras.css('display') == 'none'){
-                animacionEntrada(atras, 'default', 1, 1);
-            }
-        }        
-
-        function botonAdelante(){
-
-            if(noSlide < slides.length -1){
-                parpadear(adelante);
-            }
-            if(noSlide == slides.length -1){
-                pararHablar();
-                aplicacion.terminaPantalla();
-            }
-        }
-
-        adelante.click(function(){
-            if(adelante.css('cursor') == 'pointer'){
-                animacionSalida(slides[noSlide], 'default', 1);
-                aplicacion.detenerAudios();
-                dejarParpadear(adelante);
-                animacionSalida(adelante, 'default', 1);
-                noSlide++;
-                setTimeout(()=>{
-                    carrusel(noSlide);
-                }, 500);
-            }
-        });
-
-        atras.click(function(){
-            if(noSlide > 0){
-                animacionSalida(slides[noSlide], 'default', 1);
-                aplicacion.detenerAudios();
-                noSlide--;
-
-                pausarHablar();
-                
-                setTimeout(()=>{
-                    carrusel(noSlide);
-                }, 500);
-            }
+        boton.click(function(){
+            dejarParpadear(boton);
+            aplicacion.terminaPantalla();
         });
 
     </script>
